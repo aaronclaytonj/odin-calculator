@@ -51,6 +51,7 @@ let evaluate = () => {
   secondOperand = screen.textContent;
   screen.textContent = operate(firstOperand, secondOperand, currOperator);
   currOperator = "";
+  shouldReset = true;
 };
 
 let clear = () => {
