@@ -1,0 +1,48 @@
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  background-color: #191b28;
+  width: 25%;
+  height: 40%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+
+.row {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1px;
+}
+
+.button {
+  height: 50%;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.small {
+  flex: 1;
+}
+
+.big {
+  flex: 3.5;
+}
+
+.screen {
+  background-color: #dcdbe1;
+  flex: 11;
+  height: 50%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
