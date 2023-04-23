@@ -58,7 +58,6 @@ let clear = () => {
   currOperator = "";
   lastRes = 0;
   firstOperand = "";
-  // decimalBtn.disabled = false;
 };
 
 function appendPoint() {
@@ -73,9 +72,6 @@ let updateDisplay = (target) => {
     resetScreen();
   }
   screen.textContent += target.textContent;
-  // if (target.textContent == ".") {
-  //   target.disabled = true;
-  // }
 };
 
 let resetScreen = () => {
