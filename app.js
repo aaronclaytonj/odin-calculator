@@ -1,12 +1,17 @@
 const numberBtns = document.querySelectorAll(".number");
 const screen = document.querySelector(".screen");
 const clearBtn = document.querySelector(".clear");
+const operationBtns = document.querySelectorAll(".operation");
+const calculateBtn = document.querySelector(".calculate");
+
+let shouldReset = false;
+let currOperator = "";
+let firstOperand = "";
+let lastRes = "";
 
 numberBtns.forEach((btn) => {
   btn.addEventListener("click", function (e) {
     updateDisplay(e.target.textContent);
-    // let text = document.createTextNode(e.target.textContent);
-    // screen.appendChild(text);
   });
 });
 
@@ -14,12 +19,35 @@ clearBtn.addEventListener("click", function () {
   clear();
 });
 
+calculateBtn.addEventListener("click", function () {
+  console.log("calculate");
+  if (firstOperand != "" && currOperator != "") {
+    lastRes = operate(firstOperand, screen.textContent, currOperator);
+    screen.textContent = lastRes;
+    shouldReset = true;
+    currOperator = "";
+  }
+});
+
+operationBtns.forEach((btn) => {
+  btn.addEventListener("click", function (e) {
+    setOperator(e.target.textContent);
+  });
+});
+
+let setOperator = (operator) => {
+  if (currOperator != "") return;
+  shouldReset = true;
+  currOperator = operator;
+  firstOperand = screen.textContent;
+};
+
 let clear = () => {
   screen.textContent = "0";
 };
 
 let updateDisplay = (text) => {
-  if (screen.textContent == "0") {
+  if (screen.textContent == "0" || shouldReset) {
     resetScreen();
   }
   screen.textContent += text;
@@ -27,14 +55,13 @@ let updateDisplay = (text) => {
 
 let resetScreen = () => {
   screen.textContent = "";
+  shouldReset = false;
 };
 
 let add = (a, b) => a + b;
 let subtract = (a, b) => a - b;
 let divide = (a, b) => a / b;
 let multiply = (a, b) => a * b;
-
-let operandOne, operandTwo, operand;
 
 let operate = (op1, op2, operand) => {
   op1 = parseInt(op1);
