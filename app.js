@@ -3,15 +3,19 @@ const screen = document.querySelector(".screen");
 const clearBtn = document.querySelector(".clear");
 const operationBtns = document.querySelectorAll(".operation");
 const calculateBtn = document.querySelector(".calculate");
+const decimalBtn = document.querySelector(".decimal");
 
 let shouldReset = false;
 let currOperator = "";
 let firstOperand = "";
-let lastRes = "";
+let secondOperand = "";
+let lastRes = 0;
+
+decimalBtn.addEventListener("click", appendPoint);
 
 numberBtns.forEach((btn) => {
   btn.addEventListener("click", function (e) {
-    updateDisplay(e.target.textContent);
+    updateDisplay(e.target);
   });
 });
 
@@ -20,13 +24,7 @@ clearBtn.addEventListener("click", function () {
 });
 
 calculateBtn.addEventListener("click", function () {
-  console.log("calculate");
-  if (firstOperand != "" && currOperator != "") {
-    lastRes = operate(firstOperand, screen.textContent, currOperator);
-    screen.textContent = lastRes;
-    shouldReset = true;
-    currOperator = "";
-  }
+  evaluate();
 });
 
 operationBtns.forEach((btn) => {
@@ -36,21 +34,48 @@ operationBtns.forEach((btn) => {
 });
 
 let setOperator = (operator) => {
-  if (currOperator != "") return;
+  if (currOperator != "") evaluate();
+
   shouldReset = true;
   currOperator = operator;
   firstOperand = screen.textContent;
 };
 
-let clear = () => {
-  screen.textContent = "0";
+let evaluate = () => {
+  if (currOperator == "" || shouldReset) return;
+  if (currOperator == "/" && screen.textContent == "0") {
+    alert("opps cant divide by 0");
+    clear();
+    return;
+  }
+  secondOperand = screen.textContent;
+  screen.textContent = operate(firstOperand, secondOperand, currOperator);
+  currOperator = "";
 };
 
-let updateDisplay = (text) => {
+let clear = () => {
+  screen.textContent = "0";
+  currOperator = "";
+  lastRes = 0;
+  firstOperand = "";
+  // decimalBtn.disabled = false;
+};
+
+function appendPoint() {
+  if (shouldReset) resetScreen();
+  if (screen.textContent === "") screen.textContent = "0";
+  if (screen.textContent.includes(".")) return;
+  screen.textContent += ".";
+}
+
+let updateDisplay = (target) => {
   if (screen.textContent == "0" || shouldReset) {
     resetScreen();
   }
-  screen.textContent += text;
+  screen.textContent += target.textContent;
+  // if (target.textContent == ".") {
+  //   target.disabled = true;
+  // }
 };
 
 let resetScreen = () => {
@@ -64,8 +89,8 @@ let divide = (a, b) => a / b;
 let multiply = (a, b) => a * b;
 
 let operate = (op1, op2, operand) => {
-  op1 = parseInt(op1);
-  op2 = parseInt(op2);
+  op1 = Number(op1);
+  op2 = Number(op2);
   if (operand == "+") {
     return add(op1, op2);
   }
